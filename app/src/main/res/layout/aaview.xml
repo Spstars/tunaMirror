@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="3dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/nameTuna"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#D1D0D0"
+        android:text="TextView"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/AAview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:fontFamily="@font/saitamaar"
+        android:minWidth="800dp"
+        android:text="TextView"
+        android:textIsSelectable="true"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck" />
+
+
+</LinearLayout>
