@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
             for (news in headlines){
                 val count=news.select("span.response_sequence").text()
                 val tmp1=news.select("p.response_info>span.response_owner").text()
-                Log.i("AA",news.select("div.content").toString().replace("<br>","\n"))
+ //               Log.i("AA",news.select("div.content").toString().replace("<br>","\n"))
                 val tmp2=news.select("div.content").toString()
                     .replace("<br>","\n")
                     .replace(regax4,"")
@@ -136,7 +136,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 else if (searchTuna){
-                    if(tunaName==masterCode[0] || tunaName==masterCode[1]){
+                    Log.i("searchTuna",tunaName+" "+tmp1)
+                    val tmp3=tmp1.split("◆")
+                    if(tunaName==tmp3[0]){
                         Tunalists.add(TunaData(count.toString() + " " + tmp1, tmp2))
                     }
                 }
@@ -144,10 +146,11 @@ class MainActivity : AppCompatActivity() {
                     Tunalists.add(TunaData(count.toString() + " " + tmp1, tmp2))
                 }
             }
-            adapter.items.addAll(Tunalists)
+
             withContext(Dispatchers.Main){
+                adapter.items.addAll(Tunalists)
                 adapter.notifyDataSetChanged()
-                Log.i("Size",adapter.items.size.toString())
+                Log.i("adapter Size",adapter.items.size.toString())
             }
 
         }
@@ -192,6 +195,7 @@ class MainActivity : AppCompatActivity() {
 
                 builder.setPositiveButton("확인"){ dialogInterface, i ->
                     if (edit1 != null) {
+                        onlyMaster=false
                         tunaName=edit1.text.toString()
                         searchTuna=true
                     }
@@ -213,8 +217,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-
-
                 builder.show()
             }
         }
