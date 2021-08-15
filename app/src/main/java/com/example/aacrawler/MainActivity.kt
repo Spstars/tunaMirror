@@ -1,6 +1,7 @@
 package com.example.aacrawler
 
 import android.app.AlertDialog
+import android.content.ClipData
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     fun init(){
 
         binding.aaRecyclerView.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
- //       binding.aaRecyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        //       binding.aaRecyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         binding.aaRecyclerView.addItemDecoration(VerticalItemDecorator(20))
         binding.aaRecyclerView.addItemDecoration(HorizontalItemDecorator(10))
 
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 previousUrl=pageurl
                 Log.i("이전 주소",previousUrl)
             }
-           // pageurl="https://bbs.tunaground.net/trace.php/anchor/1596242937//"
+            // pageurl="https://bbs.tunaground.net/trace.php/anchor/1596242937//"
 
             crawlTuna(pageurl)
         }
@@ -92,15 +93,15 @@ class MainActivity : AppCompatActivity() {
         scope.launch {
 
             val doc= Jsoup.connect(pageurl).get()
-                    .outputSettings(org.jsoup.nodes.Document.OutputSettings().prettyPrint(false))
+                .outputSettings(org.jsoup.nodes.Document.OutputSettings().prettyPrint(false))
 
             val masterCode=doc.select("p.thread_owner").text().replace("Manage","").split("◆")
             Log.i("master",masterCode[0]+masterCode[1])
 
             val headlines=doc.select("div.thread_body>div")
 
-  //          val newspaper=doc.select("div.thread_body")
-   //         var tmp3 :String=news.select("div.response").select("p.response_info").select("span.response_owner").toString()
+            //          val newspaper=doc.select("div.thread_body")
+            //         var tmp3 :String=news.select("div.response").select("p.response_info").select("span.response_owner").toString()
             val regax=Regex("""<span style=".*?">""")
             val regax2=Regex("""</span>""")
             val regax3=Regex("""\s<p class="mona">""")
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             for (news in headlines){
                 val count=news.select("span.response_sequence").text()
                 val tmp1=news.select("p.response_info>span.response_owner").text()
- //               Log.i("AA",news.select("div.content").toString().replace("<br>","\n"))
+                //               Log.i("AA",news.select("div.content").toString().replace("<br>","\n"))
                 val tmp2=news.select("div.content").toString()
                     .replace("<br>","\n")
                     .replace(regax4,"")
@@ -181,9 +182,14 @@ class MainActivity : AppCompatActivity() {
                 adapter= MyAdapter(Tunalists,14F)
                 binding.aaRecyclerView.adapter=adapter
             }
+            R.id.onlyMaster->{
+                onlyMaster=!onlyMaster
+                item.setChecked(onlyMaster)
+                Log.i("오직 어장주만",onlyMaster.toString())
+
+            }
             R.id.searchOption->{
-                var builder = AlertDialog.Builder(this)
-                builder.setTitle("커스텀 다이얼로그")
+                val builder = AlertDialog.Builder(this)
 
                 var v1 = layoutInflater.inflate(R.layout.optiondialog, null)
                 builder.setView(v1)
@@ -201,26 +207,26 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 builder.setNegativeButton("취소", null)
-
-                if (onlyMaster){
-                    builder.setNeutralButton("모든 참치 검색"){dialogInterface, i->
-                        if (edit1!=null){
-                            onlyMaster=false
-                            searchTuna=false
-                        }
-                    }
-                }else{
-                    builder.setNeutralButton("Just 어장주"){dialogInterface, i->
-                        if (edit1!=null){
-                            onlyMaster=true
-                            searchTuna=false
-                        }
-                    }
-                }
+//
+//                if (onlyMaster){
+//                    builder.setNeutralButton("모든 참치 검색"){dialogInterface, i->
+//                        if (edit1!=null){
+//                            onlyMaster=false
+//                            searchTuna=false
+//                        }
+//                    }
+//                }
+//                else{
+//                    builder.setNeutralButton("Just 어장주"){dialogInterface, i->
+//                        if (edit1!=null){
+//                            onlyMaster=true
+//                            searchTuna=false
+//                        }
+//                    }
+//                }
                 builder.show()
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 }
